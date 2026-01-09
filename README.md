@@ -23,7 +23,9 @@ J'ai utilisé Ansible pour déployer automatiquement un serveur web NGINX sur ma
 Structure du dossier ansible/
 
 ansible/
+
 ├── hosts.ini     # Fichier d'inventaire (localhost)
+
 └── installnginx.yml  # Playbook d'installation NGINX
 
 Description des fichiers
@@ -45,6 +47,7 @@ J'ai découvert Terraform en créant un fichier test avec le provider local.
 Fichiers créés
 
 terraform/
+
 └── main.tf  # Configuration + resource localfile
 
 Commandes Terraform
