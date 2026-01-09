@@ -1,67 +1,52 @@
 TP1 IaC - Infrastructure as Code (Étapes 1-6)
+**Étape 1 – Initialisation Git**
+J'ai créé un dépôt Git local et réalisé mon premier commit avec le fichier README.md. J'ai maîtrisé les commandes de base du versionnement.
 
-Étape 1 – Initialisation Git
-Création d'un dépôt Git local, premier fichier README.md et commit initial. Objectif : maîtriser les bases du versionnement.
-​
-
-Commandes principales
-
+Commandes utilisées
 mkdir TP1IaC && cd TP1IaC
 git init
+echo "# TP1 IaC" > README.md
 git add README.md
 git commit -m "Initialisation du projet IaC"
-
-Étape 2 – Automatisation avec Ansible
-Utilisation d'Ansible pour déployer automatiquement un serveur web NGINX localement. Découverte des playbooks déclaratives.
-​
+**Étape 2 – Automatisation avec Ansible**
+J'ai utilisé Ansible pour déployer automatiquement un serveur web NGINX sur ma machine locale via un playbook déclaratif.
 
 Structure du dossier ansible/
 
 ansible/
-├── hosts.ini  # Fichier d'inventaire Ansible (machines cibles)
-└── installnginx.yml  # Playbook pour installer et démarrer NGINX
+├── hosts.ini     # Fichier d'inventaire (localhost)
+└── installnginx.yml  # Playbook d'installation NGINX
 Description des fichiers
 Fichier	Rôle
-hosts.ini	Définit la machine cible (localhost) 
-​
-installnginx.yml	Contient les tâches pour installer NGINX 
-​
-Exécution du playbook
-
+hosts.ini	Définit la machine cible (localhost)
+installnginx.yml	Contient les tâches d'installation NGINX
+Exécution
 ansible-playbook -i hosts.ini installnginx.yml
-Étape 3 – Terraform Local
-Introduction à Terraform avec provider local pour créer un fichier test automatiquement.
-​
+**Étape 3 – Terraform Local**
+J'ai découvert Terraform en créant un fichier test avec le provider local.
 
-Fichiers Terraform
+Fichiers créés
 
 terraform/
-└── main.tf  # Configuration provider local + resource localfile
+└── main.tf  # Configuration + resource localfile
 Commandes Terraform
-
 terraform init
 terraform plan
 terraform apply
+**Étape 4 – Variables et Outputs Terraform**
+J'ai rendu mon code Terraform réutilisable en ajoutant des variables et outputs.
 
-Étape 4 – Variables et Outputs Terraform
-Rendu du code Terraform réutilisable avec variables.tf et outputs.tf.
-​
-
-Structure Terraform
+Structure Terraform complète
 Fichier	Rôle
-variables.tf	Déclaration des variables paramétrables 
-​
-outputs.tf	Affichage des résultats après apply 
-​
-Test des outputs
-
+main.tf	Configuration provider + resources
+variables.tf	Déclaration des variables paramétrables
+outputs.tf	Affichage des résultats après apply
+Vérification des outputs
 terraform output
+**Étape 5 – Conteneur Docker NGINX**
+J'ai configuré Terraform avec le provider Docker pour créer un conteneur NGINX accessible sur le port 8080.
 
-Étape 5 – Conteneur Docker NGINX
-Terraform + provider Docker pour créer un conteneur NGINX accessible sur port 8080.
-​
-
-Configuration Docker (main.tf)
+Configuration Docker dans main.tf
 
 resource "docker_container" "nginx" {
   image  = "nginx:latest"
@@ -73,50 +58,33 @@ resource "docker_container" "nginx" {
 }
 
 Test
-
 terraform apply
+# Vérification : http://localhost:8080
+docker ps
+**Étape 6 – Intégration Terraform + Ansible + Flask**
+J'ai réalisé une automatisation complète : Terraform crée un conteneur Python, Ansible déploie une application Flask automatiquement.
 
-# Accès : http://localhost:8080
-
-docker ps  # Vérifier terraform-nginx
-
-Étape 6 – Terraform + Ansible + Flask
-Intégration complète : Terraform crée conteneur Python, Ansible déploie app Flask automatiquement via connexion Docker.
-​
 Nouveaux fichiers Ansible
-
 Fichier	Rôle
-ansible.cfg	Configuration Ansible (tmp, inventory) 
-​
-hosts.ini	Inventaire Docker (connection: docker) 
-​
-deployflask.yml	Playbook : pip, Flask, app.py, lancement 
-​
-Prérequis Étape 6
-
-pip install docker
-
-ansible-galaxy collection install community.docker
-
-Déploiement complet
-
-# 1. Terraform (conteneur)
+ansible.cfg	Configuration (inventory, tmp)
+hosts.ini	Inventaire Docker (connection: docker)
+deployflask.yml	Playbook complet (pip, Flask, app.py, lancement)
+Déploiement complet réalisé
+# 1. Infrastructure (Terraform)
 cd terraform && terraform apply
 
-# 2. Ansible (app Flask)
+# 2. Application (Ansible)
 cd ../ansible
 ansible-playbook deployflask.yml
 
-# Test : http://localhost:8080 → "Hello depuis Flask dans Docker !"
-Commandes Git Globales
-Versionnez chaque étape avec tags :
-​
+# Test final : curl http://localhost:8080
+Versionnement Git
+J'ai versionné chaque étape avec des commits et tags clairs :
+
 git add .
-git commit -m "Étape X : description"
+git commit -m "Étape X : [description]"
 git tag etape-X
 git push origin main --tags
-
 Nettoyage
-
-terraform destroy -auto-approve  # Supprime conteneurs
+terraform destroy -auto-approve
 rm -rf .terraform/ .tfstate*
