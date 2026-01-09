@@ -33,24 +33,26 @@ provider "docker" {
   # Docker est déjà installé en local 
 } 
  
-############################################################ 
-# Ressource : Conteneur Docker NGINX 
-############################################################ 
-resource "docker_container" "nginx" { 
-  image = "nginx:latest"        # Image Docker utilisée (téléchargée si absente) 
-  name  = "terraform-nginx"     # Nom du conteneur 
+############################## 
+# Ressource : Conteneur Docker Flask 
+############################## 
  
-  # Configuration des ports 
-  # Le port 80 interne du conteneur devient accessible 
-  # via le port 8080 sur la machine locale 
+# On télécharge l'image Python 
+resource "docker_image" "python" { 
+  name = "python:3.9-slim" 
+} 
+ 
+# On crée un container Docker basé sur Python 
+resource "docker_container" "flask" { 
+  name  = "terraform-flask" 
+  image = docker_image.python.name 
+ 
+  # On mappe le port 5000 interne de Flask vers le port 8080 
   ports { 
-    internal = 80               # Port dans le conteneur 
-    external = 8080             # Port sur la machine hôte 
+    internal = 5000 
+    external = 8080 
   } 
-}
-
-### Ressource locale : création d'un fichier 
-resource "local_file" "hello" { 
-  filename = var.file_name     # On remplace la valeur par une variable 
-  content  = var.file_content  # Idem pour le contenu 
-}
+ 
+  # On laisse le conteneur tourner (il démarre en idle) 
+  command = ["sleep", "infinity"] 
+} 

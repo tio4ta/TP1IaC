@@ -1,0 +1,46 @@
+--- 
+# Playbook : Déploiement Flask dans Docker 
+# Objectif : Installer Flask et déployer une app Flask dans le conteneur terraform-flask 
+ - name: Déployer une application Flask dans le conteneur Docker 
+   hosts: flask_container               # Groupe défini dans hosts.ini 
+   become: false                        # On n’utilise pas sudo ici 
+   connection: docker                   # Connexion directe Docker (pas de SSH) 
+ 
+   tasks: 
+ 
+    - name: Installer pip (gestionnaire Python) 
+      ansible.builtin.raw: | 
+        apt update && apt install -y python3-pip 
+      changed_when: false 
+ 
+    - name: Créer un répertoire application 
+      ansible.builtin.file: 
+        path: /app 
+        state: directory 
+ 
+    - name: Créer le fichier requirements.txt 
+      ansible.builtin.copy: 
+        dest: /app/requirements.txt 
+        content: | 
+          flask==3.0.0 
+ 
+    - name: Installer les dépendances Python 
+      ansible.builtin.raw: pip3 install -r /app/requirements.txt 
+ 
+    - name: Déployer l'application Flask 
+      ansible.builtin.copy: 
+        dest: /app/app.py 
+        content: | 
+ 
+          from flask import Flask 
+          app = Flask(__name__) 
+ 
+          @app.route("/") 
+          def hello(): 
+              return "   Hello depuis Flask dans Docker (provisionné avec Ansible + Terraform) !" 
+ 
+          if __name__ == "__main__": 
+              app.run(host="0.0.0.0", port=5000) 
+ 
+    - name: Lancer l'application Flask 
+      ansible.builtin.raw: python3 /app/app.py &
