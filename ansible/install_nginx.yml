@@ -1,0 +1,20 @@
+---
+- name: Installer et lancer NGINX sur la machine locale 
+  hosts: local 
+  become: yes 
+ 
+  tasks: 
+    - name: Mettre à jour les dépôts APT 
+      apt: 
+       update_cache: yes 
+ 
+    - name: Installer NGINX 
+      apt: 
+       name: nginx 
+       state: present 
+ 
+    - name: Démarrer et activer NGINX 
+      service: 
+       name: nginx 
+       state: started 
+       enabled: yes
