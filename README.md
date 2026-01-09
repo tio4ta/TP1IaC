@@ -1,6 +1,6 @@
 TP1 IaC - Infrastructure as Code (Étapes 1-6)
 
-**Étape 1 – Initialisation Git**
+# Étape 1 – Initialisation Git
 
 J'ai créé un dépôt Git local et réalisé mon premier commit avec le fichier README.md. J'ai maîtrisé les commandes de base du versionnement.
 
@@ -16,7 +16,7 @@ git add README.md
 
 git commit -m "Initialisation du projet IaC"
 
-**Étape 2 – Automatisation avec Ansible**
+# Étape 2 – Automatisation avec Ansible
 
 J'ai utilisé Ansible pour déployer automatiquement un serveur web NGINX sur ma machine locale via un playbook déclaratif.
 
@@ -40,7 +40,7 @@ Exécution
 
 ansible-playbook -i hosts.ini installnginx.yml
 
-**Étape 3 – Terraform Local**
+# Étape 3 – Terraform Local
 
 J'ai découvert Terraform en créant un fichier test avec le provider local.
 
@@ -56,7 +56,7 @@ terraform init
 terraform plan
 terraform apply
 
-**Étape 4 – Variables et Outputs Terraform**
+# Étape 4 – Variables et Outputs Terraform
 
 J'ai rendu mon code Terraform réutilisable en ajoutant des variables et outputs.
 
@@ -74,7 +74,7 @@ Vérification des outputs
 
 terraform output
 
-**Étape 5 – Conteneur Docker NGINX**
+# Étape 5 – Conteneur Docker NGINX
 
 J'ai configuré Terraform avec le provider Docker pour créer un conteneur NGINX accessible sur le port 8080.
 
@@ -100,11 +100,11 @@ Test
 
 terraform apply
 
-# Vérification : http://localhost:8080
+**Vérification : http://localhost:8080**
 
 docker ps
 
-**Étape 6 – Intégration Terraform + Ansible + Flask**
+# Étape 6 – Intégration Terraform + Ansible + Flask
 
 J'ai réalisé une automatisation complète : Terraform crée un conteneur Python, Ansible déploie une application Flask automatiquement.
 
@@ -120,17 +120,17 @@ deployflask.yml	Playbook complet (pip, Flask, app.py, lancement)
 
 Déploiement complet réalisé
 
-# 1. Infrastructure (Terraform)
+**1. Infrastructure (Terraform)**
 
 cd terraform && terraform apply
 
-# 2. Application (Ansible)
+**2. Application (Ansible)**
 
 cd ../ansible
 
 ansible-playbook deployflask.yml
 
-# Test final : curl http://localhost:8080
+**Test final : curl http://localhost:8080**
 
 Versionnement Git
 
