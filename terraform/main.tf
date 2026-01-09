@@ -1,16 +1,16 @@
-# Terraform - Test local 
-# Objectif : créer un fichier local automatiquement avec Terraform 
+############################## 
+# Fichier principal Terraform 
+############################## 
  
 terraform { 
   required_version = ">= 1.0" 
 } 
  
-provider "local" { 
-  # Provider pour exécuter des actions locales 
-} 
+# Provider local → Terraform agit sur ta machine locale 
+provider "local" {} 
  
+# Ressource locale : création d'un fichier 
 resource "local_file" "hello" { 
-  filename = "hello_terraform.txt" 
-  
-  content  = "   Terraform fonctionne correctement sur cette machine." 
+  filename = var.file_name     # On remplace la valeur par une variable 
+  content  = var.file_content  # Idem pour le contenu 
 }
