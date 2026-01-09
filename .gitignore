@@ -1,1 +1,5 @@
 .DS_Store\n__pycache__/\n*.log
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
